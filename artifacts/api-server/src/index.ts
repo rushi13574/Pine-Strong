@@ -2,19 +2,13 @@ import app from "./app";
 import { logger } from "./lib/logger";
 
 const rawPort = process.env["PORT"];
+const port = Number(rawPort) || 3000;
 
-if (!rawPort) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
+// In Vercel serverless / AWS Lambda, do not block or throw on listen
+if (process.env.VERCEL !== "1" && !process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  app.listen(port, () => {
+    logger.info({ port }, `Server listening on port ${port}`);
+  });
 }
 
-const port = Number(rawPort);
-
-if (Number.isNaN(port) || port <= 0) {
-  throw new Error(`Invalid PORT value: "${rawPort}"`);
-}
-
-app.listen(port, () => {
-  logger.info({ port }, "Server listening");
-});
+export default app;
