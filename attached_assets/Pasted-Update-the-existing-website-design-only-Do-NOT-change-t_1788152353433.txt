@@ -1,0 +1,107 @@
+Update the existing website design only. Do NOT change the existing layout, sections, content, products, pages, functionality, navigation, or overall structure.
+
+I only want to improve the visual theme and typography.
+
+### 1. CHANGE THE COLOR THEME
+
+Make the entire website primarily **white and clean**.
+
+* Main background: pure white (#FFFFFF)
+* Secondary sections: very subtle off-white (#F8F8F6 / #FAFAF9)
+* Main text: dark charcoal / near-black (#171717)
+* Secondary text: neutral gray (#666666)
+* Borders: very light gray (#E5E5E5)
+* Keep the existing natural green brand accent, but use it sparingly.
+
+The website should NOT feel green-heavy, beige-heavy, dark, or colorful.
+
+The overall impression should be:
+
+**Clean + White + Premium + Professional + Architectural**
+
+Keep images and existing visual assets exactly where they are.
+
+### 2. CHANGE THE TYPOGRAPHY
+
+The current typography feels too artistic/decorative.
+
+Replace the current fonts with a **professional modern sans-serif font**.
+
+Use:
+
+* **Inter** as the primary font across the website.
+* If needed, use **Manrope** for headings and Inter for body/UI.
+
+Do NOT use:
+
+* Serif fonts
+* Handwritten fonts
+* Decorative fonts
+* Artistic display fonts
+* Fashion/editorial fonts
+
+Typography should feel:
+
+* Professional
+* Modern
+* Clean
+* Highly readable
+* Premium
+* Architectural
+* Corporate but not boring
+
+### 3. TYPOGRAPHY HIERARCHY
+
+Improve the existing hierarchy without changing the content.
+
+Headings:
+
+* Medium/semi-bold weight
+* Clean spacing
+* Strong readability
+
+Body:
+
+* Regular weight
+* Comfortable line height
+* Neutral appearance
+
+Navigation:
+
+* Clean
+* Medium weight
+* Easy to read
+
+Buttons:
+
+* Medium/semi-bold
+* Clean uppercase or normal capitalization depending on the existing design
+
+Avoid extremely thin text.
+
+### 4. KEEP THE EXISTING DESIGN
+
+IMPORTANT:
+
+Do NOT rebuild the website.
+
+Do NOT change:
+
+* Existing sections
+* Existing layouts
+* Existing content
+* Product collections
+* Images
+* Navigation structure
+* Page structure
+* Animations
+* Functionality
+* Routes
+
+Only update:
+
+**COLOR SYSTEM + TYPOGRAPHY + SMALL TYPOGRAPHIC SPACING ADJUSTMENTS**
+
+Make sure the new font is applied consistently to every page and component.
+
+The final result should look like the exact same Version 1 website, but with a **much cleaner white theme and professional typography.**
