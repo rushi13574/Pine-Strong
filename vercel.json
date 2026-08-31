@@ -1,0 +1,11 @@
+{
+  "buildCommand": "pnpm --filter @workspace/eoacoustic-site run build",
+  "outputDirectory": "artifacts/eoacoustic-site/dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
