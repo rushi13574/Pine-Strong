@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "EOACOUSTIC Acoustic Materials"
+description = "A premium architectural materials website for EOACOUSTIC, showcasing natural acoustic panels made from conifer needles through collections, applications, material storytelling, and project support."
+version = "1.0.0"
+id = "artifacts/eoacoustic-site"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23470
+
+[services.development]
+run = "pnpm --filter @workspace/eoacoustic-site run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/eoacoustic-site", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/eoacoustic-site/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23470"
+BASE_PATH = "/"
