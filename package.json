@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "pnpm --filter @workspace/eoacoustic-site dev",
-    "build": "pnpm --filter @workspace/eoacoustic-site build",
+    "build": "pnpm --filter @workspace/eoacoustic-site build && node -e \"const fs=require('fs'); fs.cpSync('artifacts/eoacoustic-site/dist', 'dist', {recursive:true});\"",
     "serve": "pnpm --filter @workspace/eoacoustic-site serve",
     "preview": "pnpm --filter @workspace/eoacoustic-site serve",
     "typecheck": "pnpm --filter @workspace/eoacoustic-site typecheck"
