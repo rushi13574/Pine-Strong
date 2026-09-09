@@ -821,12 +821,6 @@ function Hero() {
       {/* Minimal Elegant Overlay Content */}
       <div className="container hero-cinematic-content">
         <div className="hero-cinematic-text reveal">
-          <div className="hero-cinematic-eyebrow">
-            <span>PINE STRONG®</span>
-            <span className="sep">/</span>
-            <span>{slide.tag}</span>
-          </div>
-
           <h1 className="hero-cinematic-title">
             {slide.title === 'Sound, shaped by nature.' ? (
               <>Sound, shaped <em>by nature.</em></>
@@ -835,10 +829,6 @@ function Hero() {
             )}
           </h1>
 
-          <p className="hero-cinematic-lead">
-            {slide.subtitle}
-          </p>
-
           <div className="hero-cinematic-actions">
             <Link 
               href={slide.ctaLink} 
@@ -846,9 +836,6 @@ function Hero() {
               data-testid="link-hero-collection"
             >
               {slide.ctaText} <ArrowUpRight size={15} />
-            </Link>
-            <Link href="/contact" className="btn-cinematic-secondary" data-testid="link-hero-contact">
-              Assistance for Projects
             </Link>
           </div>
         </div>
