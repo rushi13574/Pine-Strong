@@ -3,6 +3,7 @@ import {
   ArrowLeft,
   ArrowRight, 
   ArrowUpRight, 
+  ChevronDown,
   ChevronLeft,
   ChevronRight, 
   Download, 
@@ -30,6 +31,30 @@ import { Link, Route, Switch, useLocation, useParams, Router as WouterRouter } f
 
 const queryClient = new QueryClient();
 
+export type ProductShape = {
+  name: string;
+  dimensions?: string;
+  description?: string;
+  area?: string;
+  thickness?: string;
+  absorptionNRC?: string;
+  edgeDetail?: string;
+};
+
+export type PatternItem = {
+  name: string;
+  tagline: string;
+  layoutDescription: string;
+};
+
+export type InteriorProject = {
+  title: string;
+  category: string;
+  image: string;
+  acousticNote: string;
+  description: string;
+};
+
 export type Collection = {
   slug: string;
   name: string;
@@ -39,93 +64,343 @@ export type Collection = {
   longDescription: string;
   tone: string;
   image: string;
+  heroImage: string;
+  materialImage: string;
+  compositePlate?: string;
   application: string;
   formats: string;
   thickness: string;
   relief: string;
   absorption: string;
   fireRating: string;
-  patterns: string[];
+  systemTitle: string;
+  systemDescription: string;
+  shapes: ProductShape[];
+  patternTitle: string;
+  patternSubtitle?: string;
+  patterns: PatternItem[];
+  interiors: InteriorProject[];
 };
 
 export const collections: Collection[] = [
   {
-    slug: 'groove',
-    name: 'Groove Collection',
-    kicker: 'Engraved architectural rhythm',
-    tagline: 'Acoustic panels with engraved continuous patterns',
-    description: 'A harmonious relationship between architectural expressiveness and natural texture.',
-    longDescription: 'Groove collection is a family of rectangular engraved panels. Graphic linear and geometric elements connect seamlessly across panels to create a continuous architectural pattern. Spruce and pine needles serve as a natural porous core that minimizes echo and reverberation.',
-    tone: 'groove',
-    image: media.colGroove,
-    application: 'Wall · Accent Feature · Commercial & Residential',
-    formats: '600 × 1200 mm · 600 × 600 mm',
-    thickness: '18–25 mm thickness',
-    relief: '8–18 mm depth relief',
-    absorption: 'NRC 0.85 (Class B sound absorption)',
-    fireRating: 'Class B-s1, d0 (EN 13501-1)',
-    patterns: [
-      'Linear 01', 'Linear 02', 'Diagonal 01', 'Diagonal 02', 
-      'Hatch 01', 'Hatch 02', 'Checkered 01', 'Checkered 02', 
-      'Arc 01', 'Arc 02', 'Track 01', 'Polka Dot', 'Lego', 'Berry'
-    ],
-  },
-  {
     slug: 'mosaic',
     name: 'Mosaic Collection',
     kicker: 'Modular geometric system',
-    tagline: 'Modular system of geometric shapes and textures',
-    description: 'Small modular pieces composed into a vibrant acoustic surface with human pulse.',
-    longDescription: 'Mosaic brings geometric precision into focus. Its modular composition can be laid as a calm monochromatic field or a more expressive constellation. Combining triangles, squares, and angled reliefs, it creates a tactile acoustic surface with the sensibility of a three-dimensional textile.',
+    tagline: 'System of geometric shapes combined into expressive ornamental compositions',
+    description: 'Small modular pieces composed into a vibrant acoustic surface with human pulse and geometric freedom.',
+    longDescription: 'PINE STRONG Mosaic collection creates expressive and bright ornamental compositions in the interior. Mosaic is a system of geometric shapes that are combined with each other and create lots of variations of patterns and compositions. Different versions of the edges of the panels give a flat or embossed character of the surface. The panels are presented in multiple variations of sizes, which allows you to find the desired scale of the pattern, and also allows you to combine large and small figures, if necessary. Fallen pine needles serve as a natural porous core that minimizes echo and reverberation.',
     tone: 'mosaic',
     image: media.colMosaic,
-    application: 'Wall · Partition · Feature Columns',
-    formats: '300 × 300 mm · 600 × 600 mm modular tiles',
+    heroImage: media.mosaicHero,
+    materialImage: media.mosaicMaterial,
+    compositePlate: media.mosaicShapesComposite,
+    application: 'Wall · Accent Feature · Partitions · Columns',
+    formats: '300 × 300 mm · 600 × 600 mm modular units',
     thickness: '15–22 mm thickness',
-    relief: 'Multi-plane 12 mm relief',
-    absorption: 'NRC 0.80 (Class B sound absorption)',
+    relief: 'Multi-plane 12 mm bevel relief',
+    absorption: 'NRC 0.85 (Class B sound absorption)',
     fireRating: 'Class B-s1, d0 (EN 13501-1)',
+    systemTitle: 'Twelve shapes of collection',
+    systemDescription: 'Twelve precisely engineered geometric figures allowing limitless tessellation, spatial rhythm, and compositional scaling.',
+    shapes: [
+      { name: 'Rhombus', dimensions: '300 × 300 mm', description: 'Angled diamond tile', area: '0.09 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.85', edgeDetail: '45° Micro-bevel' },
+      { name: 'Triangle A', dimensions: '300 × 300 mm', description: 'Equilateral geometry', area: '0.04 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.85', edgeDetail: '45° Micro-bevel' },
+      { name: 'Triangle B', dimensions: '300 × 300 mm', description: 'Right-angle triangle', area: '0.045 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.85', edgeDetail: '45° Micro-bevel' },
+      { name: 'Trapeze', dimensions: '300 × 600 mm', description: 'Symmetrical trapezoid', area: '0.135 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.88', edgeDetail: '45° Micro-bevel' },
+      { name: 'Rectangle C', dimensions: '150 × 600 mm', description: 'Narrow plank tile', area: '0.09 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.85', edgeDetail: 'Seamless / Beveled' },
+      { name: 'Rectangle B', dimensions: '300 × 600 mm', description: 'Standard rectangle', area: '0.18 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.88', edgeDetail: 'Seamless / Beveled' },
+      { name: 'Hexahedron', dimensions: '300 × 300 mm', description: 'Six-sided polygon', area: '0.08 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.85', edgeDetail: '45° Micro-bevel' },
+      { name: 'Rectangle A', dimensions: '300 × 450 mm', description: 'Medium aspect block', area: '0.135 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.88', edgeDetail: 'Seamless / Beveled' },
+      { name: 'Square', dimensions: '300 × 300 mm', description: 'Square foundational base', area: '0.09 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.85', edgeDetail: 'Seamless / Beveled' },
+      { name: 'Triangle C', dimensions: '150 × 300 mm', description: 'Inverted scalene', area: '0.023 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.82', edgeDetail: '45° Micro-bevel' },
+      { name: 'Parallelogram A', dimensions: '300 × 600 mm', description: 'Right-slanted angle', area: '0.18 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.88', edgeDetail: '45° Micro-bevel' },
+      { name: 'Parallelogram B', dimensions: '300 × 600 mm', description: 'Left-slanted angle', area: '0.18 m²', thickness: '15 / 18 / 22 mm', absorptionNRC: '0.88', edgeDetail: '45° Micro-bevel' },
+    ],
+    patternTitle: 'Creative freedom with many patterns',
+    patternSubtitle: 'Explore our curated architectural pattern configurations or compose a bespoke rhythmic relief tailored specifically to your project dimensions.',
     patterns: [
-      'Square Grid', 'Triangle Chevron', 'Diamond Rhythms', 'Hexagon Pulse',
-      'Staggered Brick', 'Diagonal Fold', 'Rhombus Mosaic', 'Asymmetric Float'
+      { name: 'Hexagonal Honeycomb', tagline: 'Continuous bio-cellular matrix', layoutDescription: 'Seamless interlocking Hexahedron units creating an organic sound-diffusing mesh for double-height atriums.' },
+      { name: 'Diamond Pulse', tagline: 'Dynamic radial tessellation', layoutDescription: 'Rhombus diamond clusters arranged in an alternating radial expansion that guides natural interior lighting.' },
+      { name: 'Trapeze Weave', tagline: 'Staggered directional rhythm', layoutDescription: 'Alternating Trapeze modules creating an undulating horizontal movement that breaks up flutter echoes.' },
+      { name: 'Triangle Chevron', tagline: 'Symmetrical acoustic wave', layoutDescription: 'Pairing Triangle A & Triangle B in sharp directional chevrons for focused executive boardrooms.' },
+      { name: 'Rhombus Constellation', tagline: 'Multi-point geometric starburst', layoutDescription: 'Symmetrical star arrays providing multi-angle sound scattering across expansive reception walls.' },
+      { name: 'Parallelogram Flow', tagline: 'Slanted rhythmic linear plane', layoutDescription: 'Right and left slanted Parallelograms flowing continuously along long corridors to tame reverberation.' },
+      { name: 'Asymmetric Tessellation', tagline: 'Complex architectural collage', layoutDescription: 'A balanced interplay of Squares, Rectangles, and Triangles tailored to irregular room boundaries.' },
+      { name: 'Modular Prism', tagline: 'Isometric 3D optical relief', layoutDescription: 'Three-rhombus clusters creating an optical illusion of depth while providing enhanced surface area.' },
+      { name: 'Dynamic Diagonal', tagline: 'Directional angular lines', layoutDescription: '45-degree angled steps leading the eye through transitions between spatial volumes.' },
+      { name: 'Staggered Geo', tagline: 'Offset ashlar geometric bond', layoutDescription: 'Running bond rectangles anchored by foundational squares for timeless architectural presence.' },
+      { name: 'Monochromatic Relief', tagline: 'Subtle stepped shadow plane', layoutDescription: 'Alternating 15 mm and 22 mm thickness levels to create subtle natural shadow rhythms without color contrast.' },
+      { name: 'Contrast Mosaic', tagline: 'Dual-orientation interplay', layoutDescription: 'Mixing contrasting needle fiber orientations to catch daylight and provide tactile visual rhythm.' },
+    ],
+    interiors: [
+      {
+        title: 'Metropolitan Atrium & Lobby',
+        category: 'Commercial Lobby',
+        image: media.mosaicHero,
+        acousticNote: 'Reverberation reduced from 2.2s to 0.65s',
+        description: 'Continuous tessellated Rhombus and Hexahedron panels creating a monumental sound-absorbing welcome feature.',
+      },
+      {
+        title: 'Architectural Material Atelier',
+        category: 'Studio Showroom',
+        image: media.mosaicProjectAtelier,
+        acousticNote: 'Echo flutter eliminated across 250–4000 Hz',
+        description: 'Dual-scale Triangle A & Trapeze panels configured as an acoustic accent wall for focused design critique.',
+      },
+      {
+        title: 'Executive Boardroom Feature',
+        category: 'Corporate Suite',
+        image: media.mosaicProjectBoardroom,
+        acousticNote: 'STI speech intelligibility improved to 0.82',
+        description: 'Angled Parallelogram geometry providing acoustic diffusion while controlling reflective speech noise.',
+      },
+      {
+        title: 'Contemporary Private Residence',
+        category: 'Residential',
+        image: media.mosaicProjectResidence,
+        acousticNote: 'Warm intimate acoustic envelope',
+        description: 'Natural pine-needle mosaic wall bringing forest scent, bio-circular materiality, and auditory comfort.',
+      },
+    ],
+  },
+  {
+    slug: 'groove',
+    name: 'Groove Collection',
+    kicker: 'Engraved architectural rhythm',
+    tagline: 'Rectangular engraved panels with connecting continuous patterns',
+    description: 'A harmonious relationship between architectural expressiveness and natural conifer texture.',
+    longDescription: 'PINE STRONG Groove collection is a family of rectangular engraved panels. Graphic linear and geometric elements connect seamlessly across panels to create a continuous architectural pattern. GROOVE is a harmonious relationship between the necessary architectural expressiveness and the conciseness of a monochromatic natural texture. Due to the GROOVE principle, it is possible to create large-format complex compositions that combine graphics and color. Fallen pine needles serve as a natural porous acoustic core that minimizes echo and reverberation.',
+    tone: 'groove',
+    image: media.colGroove,
+    heroImage: media.grooveHero,
+    materialImage: media.grooveMaterial,
+    application: 'Wall · Executive Suites · Lobbies · Feature Planes',
+    formats: '600 × 1200 mm · 600 × 600 mm',
+    thickness: '18–25 mm thickness',
+    relief: '8–18 mm depth V-grooves',
+    absorption: 'NRC 0.85 (Class B sound absorption)',
+    fireRating: 'Class B-s1, d0 (EN 13501-1)',
+    systemTitle: 'More than 20 options of groove system',
+    systemDescription: 'A library of precision CNC-carved linear, diagonal, radial, and checkered channels that connect across panel borders.',
+    shapes: [
+      { name: 'Lego', description: 'Interlocking block pattern', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Interlocking joint' },
+      { name: 'Polka dot', description: 'Punctured rhythmic relief', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Micro-bevel' },
+      { name: 'Lapky', description: 'Organic soft relief', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Continuous relief' },
+      { name: 'Berry', description: 'Textured point matrix', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Micro-bevel' },
+      { name: 'Fun', description: 'Dynamic asymmetrical relief', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Beveled joint' },
+      { name: 'Plain', description: 'Smooth unengraved baseline', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.82', edgeDetail: 'Seamless butt-joint' },
+      { name: 'Diagonal lines 02', description: '45-degree rhythmic spacing', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Connecting groove' },
+      { name: 'Hatch 01', description: 'Fine cross-hatch micro texture', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Seamless edge' },
+      { name: 'Lines 04', description: 'Dense linear fluting', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Continuous flute' },
+      { name: 'Rectangular', description: 'Stepped rectangular channels', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Connecting groove' },
+      { name: 'Lines 03', description: 'Medium spaced linear tracks', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Continuous flute' },
+      { name: 'Diagonal lines 03', description: 'Wide diagonal relief', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Connecting groove' },
+      { name: 'Checkered 01', description: 'Balanced architectural grid', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Seamless grid' },
+      { name: 'Checkered 03', description: 'Offset checkered matrix', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Offset relief' },
+      { name: 'Diagonal lines 01', description: 'Continuous directional angle', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Connecting groove' },
+      { name: 'Hatch 02', description: 'Dense tactile cross grooves', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Micro-relief' },
+      { name: 'Lines 02', description: 'Wide linear grooves', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Continuous flute' },
+      { name: 'Lines 03 (Alt)', description: 'Alternating linear cadence', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Continuous flute' },
+      { name: 'Arc 02', description: 'Concentric radial curves', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Continuous curve' },
+      { name: 'Track 01', description: 'Linear raceway channels', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Shadow channel' },
+      { name: 'Checkered 02', description: 'Staggered shadow grid', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Connecting grid' },
+      { name: 'Arc 01', description: 'Sweeping continuous arc', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Continuous curve' },
+      { name: 'Track 02', description: 'Double channel relief', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Double groove' },
+      { name: 'Arc 03', description: 'Large quadrant arc', dimensions: '600 × 1200 mm', area: '0.72 m²', thickness: '18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Quadrant curve' },
+    ],
+    patternTitle: 'Creative freedom with many patterns',
+    patternSubtitle: 'Explore engraved rhythmic layouts where precision CNC channels connect seamlessly across panel boundaries.',
+    patterns: [
+      { name: 'Continuous Fluted Wall', tagline: 'Seamless vertical linear rhythm', layoutDescription: 'Parallel vertical grooves aligning precisely from slab to slab for monolithic architectural walls.' },
+      { name: 'Geometric Diamond Fold', tagline: 'Concentric diamond relief field', layoutDescription: 'Intersecting 45-degree CNC cuts forming a diamond grid that breaks up audio flutter echoes.' },
+      { name: 'Chevron Linear Rhythms', tagline: 'Dynamic acoustic herringbone', layoutDescription: 'Mirrored diagonal angles creating directional energy in corporate reception and executive halls.' },
+      { name: 'Radial Wave Composition', tagline: 'Expanding concentric ripples', layoutDescription: 'Quarter-circle arcs spreading across four adjacent panels into an expansive sculptural wave.' },
+      { name: 'Checkered Acoustic Canvas', tagline: 'Alternating directional shadow blocks', layoutDescription: 'Square grooved modules alternating between horizontal and vertical lines for maximum acoustic diffusion.' },
+      { name: 'Asymmetric Diagonal Track', tagline: 'Staggered dynamic relief channels', layoutDescription: 'Varied-pitch diagonal grooves providing architectural tension and acoustic diffusion.' },
+      { name: 'Micro-Hatch Sound Plane', tagline: 'Fine textured diffusion surface', layoutDescription: 'Dense tactile cross-grooves engineered for speech intimacy in confidential conference rooms.' },
+      { name: 'Curved Corridor Flow', tagline: 'Sweeping architectural arcs', layoutDescription: 'Long-radius arcs flowing continuously through hospitality corridors to dampen high-frequency footfall.' },
+      { name: 'Lego Grid Relief', tagline: 'Modular dimensional block canvas', layoutDescription: 'Stepped rectangular channels and stud accents creating playful tactile depth.' },
+      { name: 'Concentric Arc Ripple', tagline: 'Quadrant wave acoustic relief', layoutDescription: 'Nested circular curves focusing sound dampening around collaborative seating areas.' },
+      { name: 'Offset Track Cadence', tagline: 'Staggered stadium slot pattern', layoutDescription: 'Rounded racetrack channels creating quiet architectural presence behind executive desks.' },
+      { name: 'Dual-Angle Cross Grid', tagline: 'Intersecting 45-degree relief', layoutDescription: 'Precision double-angle engraving combining light play with Class B acoustic absorption.' },
+    ],
+    interiors: [
+      {
+        title: 'Executive Council Chambers',
+        category: 'Corporate Suite',
+        image: media.grooveHero,
+        acousticNote: 'Reverberation reduced from 1.9s to 0.58s',
+        description: 'Precision CNC-engraved linear fluting providing directional acoustic diffusion and sound absorption.',
+      },
+      {
+        title: 'High-Ceiling Auditorium Cladding',
+        category: 'Civic Auditorium',
+        image: media.grooveProjectAuditorium,
+        acousticNote: 'Balanced frequency absorption NRC 0.85',
+        description: 'Full-height continuous diagonal and horizontal grooved paneling controlling low-frequency rumble.',
+      },
+      {
+        title: 'Hospitality Dining & Lounge',
+        category: 'Hospitality Lounge',
+        image: media.grooveProjectDining,
+        acousticNote: 'Speech babble noise dampened by 7.4 dB',
+        description: 'Concentric Arc and Lego relief panels preventing acoustic reflection in high-occupancy dining spaces.',
+      },
+      {
+        title: 'Creative Collaborative Hub',
+        category: 'Workplace',
+        image: media.grooveProjectHub,
+        acousticNote: 'Quiet zones created without physical partitions',
+        description: 'Hatch and Checkered groove panels lining meeting alcoves for confidential conversation.',
+      },
     ],
   },
   {
     slug: 'base',
     name: 'The Base Collection',
     kicker: 'Blank sheet architectural material',
-    tagline: 'Essential blank sheet material for broad gestures',
-    description: 'The honest, softly textured starting point for a considered, quiet interior.',
-    longDescription: 'The Base Collection lets the natural PINE STRONG needle material speak in its most direct, unfiltered form. A lightly felted, porous surface made for broad architectural gestures, discreet acoustic ceilings, and continuous wall planes where quiet should feel effortless.',
+    tagline: 'Concise surfaces with focus on pure pine-needle forest texture',
+    description: 'The honest, softly textured starting point for a considered, monumental quiet interior.',
+    longDescription: 'The Base collection of acoustic panels allows you to create concise surfaces with a focus on forest texture. Natural texture and unique needles pattern create a decorative and functional coating. The dimensions of the panels make installation easier even on very large surfaces. Fallen pine needles serve as a natural porous core and minimize the echo effect.',
     tone: 'base',
     image: media.colBase,
-    application: 'Wall · Ceiling · Continuous Cladding',
-    formats: '600 × 1200 mm · 1200 × 2400 mm sheets',
+    heroImage: media.baseHero,
+    materialImage: media.baseMaterial,
+    application: 'Wall · Ceiling · Monolithic Cladding · Auditoriums',
+    formats: 'Standard sheets from 165 × 285 mm to 660 × 1143 mm',
     thickness: '12 mm · 18 mm · 25 mm',
-    relief: 'Smooth natural felted grain',
+    relief: 'Smooth natural needle grain & beveled options',
     absorption: 'NRC 0.90 (Class A/B sound absorption)',
     fireRating: 'Class B-s1, d0 (EN 13501-1)',
+    systemTitle: 'Eight plain sizes of PINE STRONG material',
+    systemDescription: 'Modular standard dimensions engineered for efficient coverage, minimal cutting waste, and seamless acoustic continuity.',
+    shapes: [
+      { name: '165 × 571 mm', dimensions: '165 × 571 mm', description: 'Slim acoustic plank', area: '0.094 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Micro-bevel / Butt' },
+      { name: '330 × 571 mm', dimensions: '330 × 571 mm', description: 'Standard rectangular tile', area: '0.188 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.90', edgeDetail: 'Micro-bevel / Butt' },
+      { name: '660 × 1143 mm', dimensions: '660 × 1143 mm', description: 'Large acoustic slab', area: '0.754 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.92', edgeDetail: 'Seamless butt-joint' },
+      { name: '165 × 285 mm', dimensions: '165 × 285 mm', description: 'Compact accent strip', area: '0.047 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Micro-bevel' },
+      { name: '570 × 1140 mm', dimensions: '570 × 1140 mm', description: 'Architectural wall panel', area: '0.650 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.90', edgeDetail: 'Micro-bevel / Butt' },
+      { name: '570 × 570 mm', dimensions: '570 × 570 mm', description: 'Square modular tile', area: '0.325 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.90', edgeDetail: 'Micro-bevel / Butt' },
+      { name: '285 × 570 mm', dimensions: '285 × 570 mm', description: 'Half-panel module', area: '0.162 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.88', edgeDetail: 'Micro-bevel / Butt' },
+      { name: '285 × 285 mm', dimensions: '285 × 285 mm', description: 'Quarter modular square', area: '0.081 m²', thickness: '12 / 18 / 25 mm', absorptionNRC: '0.85', edgeDetail: 'Micro-bevel / Butt' },
+    ],
+    patternTitle: 'Creative freedom with modular formats',
+    patternSubtitle: 'Combine the 8 plain sheet dimensions into rhythmic architectural bonds, monolithic planes, or suspended acoustic ceiling fields.',
     patterns: [
-      'Standard Smooth Sheet', 'Beveled Edge Grid', 'Seamless Butt Joint', 'Micro-perforated Core'
+      { name: 'Monolithic Wall Plane', tagline: 'Seamless continuous butt-joint field', layoutDescription: 'Large 660 × 1143 mm slabs installed with hairline joints for uninterrupted, calm bio-acoustic surfaces.' },
+      { name: 'Staggered Ashlar Brick', tagline: 'Running bond modular rhythm', layoutDescription: 'Alternating 570 × 1140 mm and 285 × 570 mm panels in a traditional architectural running bond.' },
+      { name: 'Continuous Butt-Joint Ceiling', tagline: 'Large-slab overhead plane', layoutDescription: 'Ceiling mounted plain panels absorbing rising reverberation in high-volume public lobbies.' },
+      { name: 'Vertical Plank Rhythm', tagline: 'Slim vertical acoustic slats', layoutDescription: '165 × 571 mm slim modules arranged in vertical columns to accentuate room height.' },
+      { name: 'Modular Square Grid', tagline: 'Symmetrical architectural matrix', layoutDescription: '570 × 570 mm and 285 × 285 mm square modules forming a balanced geometric grid.' },
+      { name: 'Alternating Block Weave', tagline: 'Interlocking horizontal & vertical units', layoutDescription: 'Woven orientation of rectangular tiles catching incident light at varying angles.' },
+      { name: 'Beveled Shadow Reveal', tagline: '45-degree shadow reveal joints', layoutDescription: 'Panels installed with 3 mm shadow reveals to celebrate modular panel boundaries.' },
+      { name: 'Micro-Perforated Field', tagline: 'High-frequency sound diffusion field', layoutDescription: 'Plain surface with internal needle porosity tuned for speech clarity in educational rooms.' },
+    ],
+    interiors: [
+      {
+        title: 'Symphony Hall & Auditorium',
+        category: 'Cultural & Civic',
+        image: media.baseHero,
+        acousticNote: 'Certified NRC 0.90 across full octave spectrum',
+        description: 'Large-format 660 × 1143 mm and 570 × 1140 mm plain conifer needle panels creating an honest, monolithic plane.',
+      },
+      {
+        title: 'Double-Height Public Gallery',
+        category: 'Museum & Gallery',
+        image: media.appPublic,
+        acousticNote: 'Long reverberation tamed without visual distraction',
+        description: 'Ashlar running-bond layout using modular 570 × 570 mm tiles with subtle hairline butt joints.',
+      },
+      {
+        title: 'Acoustic Sanctuary & Wellness Retreat',
+        category: 'Wellness Spa',
+        image: media.appSpa,
+        acousticNote: 'Natural conifer phytoncides + sound absorption',
+        description: 'Continuous wall-to-ceiling base panels providing soothing tactile warmth and acoustic intimacy.',
+      },
+      {
+        title: 'Minimalist Architecture Studio',
+        category: 'Design Studio',
+        image: media.baseProjectStudio,
+        acousticNote: 'Monolithic wall cladding with 18 mm acoustic core',
+        description: 'Concise surfaces with focus on pure pine-needle forest texture and architectural geometry.',
+      },
     ],
   },
   {
-    slug: 'island',
-    name: 'Island Wall Collection',
-    kicker: 'Composition with spaces',
-    tagline: 'Soft-edged islands that organise sound without closing a room in',
-    description: 'Sculptural, floating organic forms that bring acoustic comfort to open volumes.',
-    longDescription: 'Island Wall Collection is a family of generous, sculptural forms. Float single elements as focal points or build expansive compositions across walls and high ceilings. Every rounded radius is precision-machined to make spacious rooms feel calmer, warmer, and acoustically balanced.',
-    tone: 'island',
-    image: media.colIsland,
+    slug: 'radius',
+    name: 'Radius Collection',
+    kicker: 'Rounded geometric system (Island)',
+    tagline: 'System of rounded geometric shapes creating sculptural acoustic islands',
+    description: 'Sculptural, floating organic forms that bring acoustic comfort to open volumes with soft curved contours.',
+    longDescription: 'Radius collection of acoustic panels is a system of rounded geometric shapes surrounded by background. The rounded shape of the panels and the background of the walls create the effect of the collaboration of architecture and decor. Due to the background, the composition of the RADIUS system panels can be combined with different colors and create unusual accents. Fallen pine needles serve as a natural porous core and minimize the echo effect.',
+    tone: 'radius',
+    image: media.colRadius,
+    heroImage: media.radiusHero,
+    materialImage: media.radiusMaterial,
     application: 'Wall · Ceiling Clouds · Suspended Echo Absorbers',
-    formats: 'Custom formats up to 1400 × 1400 mm',
+    formats: 'Modular elements up to 1200 × 1200 mm',
     thickness: '25 mm · 35 mm acoustic core',
-    relief: 'Curved organic radius edges',
+    relief: 'Curved organic radius perimeter',
     absorption: 'NRC 0.92 (Class A sound absorption)',
     fireRating: 'Class B-s1, d0 (EN 13501-1)',
+    systemTitle: 'Seven shapes of Radius system',
+    systemDescription: 'Volumetric soft-radius acoustic elements that float individually or group into expansive organic constellations.',
+    shapes: [
+      { name: 'Arko', dimensions: '400 × 800 mm', description: 'Arch with curved top and straight base', area: '0.28 m²', thickness: '25 / 35 mm', absorptionNRC: '0.92', edgeDetail: 'Soft bullnose radius' },
+      { name: 'Rhomus', dimensions: '600 × 600 mm', description: 'Soft-cornered rounded diamond', area: '0.32 m²', thickness: '25 / 35 mm', absorptionNRC: '0.90', edgeDetail: 'Soft bullnose radius' },
+      { name: 'Rectangle', dimensions: '400 × 800 mm', description: 'Rounded corner rectangular slab', area: '0.32 m²', thickness: '25 / 35 mm', absorptionNRC: '0.92', edgeDetail: 'Soft bullnose radius' },
+      { name: 'Delta', dimensions: '600 × 600 mm', description: 'Soft triangular delta form', area: '0.24 m²', thickness: '25 / 35 mm', absorptionNRC: '0.90', edgeDetail: 'Soft bullnose radius' },
+      { name: 'Round', dimensions: 'Ø 600 / 800 mm', description: 'Full circular acoustic disc', area: '0.28 / 0.50 m²', thickness: '25 / 35 mm', absorptionNRC: '0.92', edgeDetail: 'Continuous circular radius' },
+      { name: 'Square', dimensions: '600 × 600 mm', description: 'Rounded corner square module', area: '0.36 m²', thickness: '25 / 35 mm', absorptionNRC: '0.90', edgeDetail: 'Soft bullnose radius' },
+      { name: 'Petal', dimensions: '500 × 750 mm', description: 'Asymmetric organic leaf contour', area: '0.31 m²', thickness: '25 / 35 mm', absorptionNRC: '0.90', edgeDetail: 'Curved organic radius' },
+    ],
+    patternTitle: 'Creative freedom with many patterns',
+    patternSubtitle: 'Create bespoke acoustic constellations where soft-radius figures float against contrasting architectural backgrounds.',
     patterns: [
-      'Pebble Cloud', 'Soft Ellipse', 'Rounded Rectangle', 'Circular Disk', 'Asymmetric Pod'
+      { name: 'Floating Wall Island', tagline: 'Central Arko with satellite soft discs', layoutDescription: 'Central Arko arch anchored by peripheral Round and Delta elements with breathing negative space.' },
+      { name: 'Ceiling Acoustic Cloud', tagline: 'Suspended horizontal sound baffles', layoutDescription: 'Suspended Round and Rhomus acoustic elements floating over collaborative meeting tables.' },
+      { name: 'Constellation Scatter', tagline: 'Dispersed organic Deltas and Petals', layoutDescription: 'Organic distribution across expansive walls creating an art installation with acoustic absorption.' },
+      { name: 'Linear Horizon Arcs', tagline: 'Datum-aligned Arko sequence', layoutDescription: 'A rhythmic progression of Arko arches establishing an architectural datum in tall corridors.' },
+      { name: 'Organic Wave Cluster', tagline: 'Fluid undulating Petal and Round layout', layoutDescription: 'Asymmetric Petal and Round groupings evoking natural biophilic wave forms.' },
+      { name: 'Biophilic Feature Wall', tagline: 'Harmonious composition of all 7 rounded forms', layoutDescription: 'Carefully scaled arrangement of all 7 radius figures bringing human warmth to commercial interiors.' },
+      { name: 'Triple Disk Canopy', tagline: 'Three overlapping circular acoustic discs', layoutDescription: 'Three distinct diameter Round discs suspended at staggered heights to absorb multi-frequency sound.' },
+      { name: 'Arko Gateway Transition', tagline: 'Monumental portal flanked by Arko forms', layoutDescription: 'Framing portals and entrance halls with Arko acoustic elements to signal spatial transition.' },
+      { name: 'Rhomus Radial Burst', tagline: 'Soft diamond cluster with negative space', layoutDescription: 'Four Rhomus diamonds rotated at 90 degrees around a central point of silence.' },
+      { name: 'Delta Ascent Pattern', tagline: 'Upward-pointing delta acoustic array', layoutDescription: 'Upward dynamic orientation of Delta panels guiding sound absorption toward high ceilings.' },
+      { name: 'Petal Cascade', tagline: 'Gentle falling organic silhouette', layoutDescription: 'Staggered Petal elements cascading along vertical feature walls in stairwells and lobbies.' },
+      { name: 'Balanced Acoustic Pod', tagline: 'Central meeting pod acoustic surround', layoutDescription: 'Curved radius panels surrounding phone booths and meeting pods to preserve speech confidentiality.' },
+    ],
+    interiors: [
+      {
+        title: 'Open-Plan Innovation Campus',
+        category: 'Collaborative Workspace',
+        image: media.radiusHero,
+        acousticNote: 'Direct speech reflection dampened by 68%',
+        description: 'Free-hanging sculptural Arko, Rhomus, and Delta island panels floating against warm architectural backdrops.',
+      },
+      {
+        title: 'Corporate Reception Canopy',
+        category: 'Commercial Lobby',
+        image: media.radiusProjectLobby,
+        acousticNote: 'Reverberant marble floor noise absorbed',
+        description: 'Suspended Round and Petal acoustic clouds framing arrival zones with organic biophilic silhouettes.',
+      },
+      {
+        title: 'Design Gallery Atrium',
+        category: 'Public Cultural Space',
+        image: media.radiusProjectAtrium,
+        acousticNote: 'Reverberation reduced from 2.6s to 0.72s',
+        description: 'Constellation scatter of soft-radius acoustic elements floating as architectural art.',
+      },
+      {
+        title: 'Private Executive Pod',
+        category: 'Private Office',
+        image: media.radiusProjectPod,
+        acousticNote: 'Focused speech privacy and echo elimination',
+        description: 'Wall-mounted Arko and Square radius elements creating a cozy, sound-damped meeting sanctuary.',
+      },
     ],
   },
 ];
@@ -263,10 +538,17 @@ export function scrollToProductRange(event?: React.MouseEvent, navigate?: (path:
 }
 
 const navItems = [
-  { href: '#product-range', label: 'Collections' },
+  { href: '/downloads', label: 'Downloads' },
   { href: '/pattern-inspiration', label: 'Pattern inspiration' },
   { href: '/sustainability', label: 'Sustainability' },
   { href: '/about', label: 'About us' },
+];
+
+const collectionLinks = [
+  { href: '/collections/mosaic', name: 'Mosaic Collection', subtitle: '12 Geometric Shapes & Formats' },
+  { href: '/collections/groove', name: 'Groove Collection', subtitle: '24 Precision CNC Engraved Systems' },
+  { href: '/collections/base', name: 'The Base Collection', subtitle: '8 Modular Plain Sheet Sizes' },
+  { href: '/collections/radius', name: 'Radius Collection', subtitle: '7 Soft-Radius Acoustic Island Shapes' },
 ];
 
 function Header() {
@@ -291,26 +573,49 @@ function Header() {
           PINE STRONG<span>acoustic materials</span>
         </Link>
         <nav className="header-nav" aria-label="Primary navigation">
-          {navItems.map((item) => (
-            item.href.startsWith('#') ? (
+          {/* Collections Dropdown */}
+          <div className="nav-dropdown-wrap">
+            <button 
+              className="nav-dropdown-trigger" 
+              onClick={(e) => handleNavClick(e, '#product-range')}
+              aria-haspopup="true"
+              data-testid="nav-collections-dropdown"
+            >
+              Collections <ChevronDown size={12} strokeWidth={2} />
+            </button>
+            <div className="nav-dropdown-menu" role="menu">
+              {collectionLinks.map((item) => (
+                <Link 
+                  key={item.href} 
+                  href={item.href} 
+                  className="nav-dropdown-item" 
+                  role="menuitem"
+                >
+                  <span className="nav-dropdown-item-title">{item.name}</span>
+                  <span className="nav-dropdown-item-subtitle">{item.subtitle}</span>
+                </Link>
+              ))}
+              <div className="nav-dropdown-divider" />
               <a 
-                key={item.label} 
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                data-testid={`link-nav-${item.label.toLowerCase().replaceAll(' ', '-')}`}
+                href="#product-range" 
+                onClick={(e) => handleNavClick(e, '#product-range')} 
+                className="nav-dropdown-item"
               >
-                {item.label}
+                <span className="nav-dropdown-item-title">All Collections Overview</span>
+                <span className="nav-dropdown-item-subtitle">Compare all four acoustic material families</span>
               </a>
-            ) : (
-              <Link 
-                key={item.href} 
-                href={item.href} 
-                aria-current={location.startsWith(item.href) ? 'page' : undefined} 
-                data-testid={`link-nav-${item.label.toLowerCase().replaceAll(' ', '-')}`}
-              >
-                {item.label}
-              </Link>
-            )
+            </div>
+          </div>
+
+          {navItems.map((item) => (
+            <Link 
+              key={item.href} 
+              href={item.href} 
+              aria-current={location.startsWith(item.href) ? 'page' : undefined} 
+              data-testid={`link-nav-${item.label.toLowerCase().replaceAll(' ', '-')}`}
+            >
+              {item.label}
+            </Link>
           ))}
         </nav>
         <Link href="/contact" className="header-action" data-testid="link-header-contact">
@@ -328,14 +633,22 @@ function Header() {
       {open && (
         <nav className="mobile-menu" aria-label="Mobile navigation">
           <Link href="/" onClick={closeMenu} data-testid="link-mobile-home">Home</Link>
+          <div className="mobile-menu-section-label">Collections</div>
+          {collectionLinks.map((item) => (
+            <Link key={item.href} href={item.href} onClick={closeMenu} className="mobile-sublink">
+              {item.name}
+            </Link>
+          ))}
           <a 
             href="#product-range" 
             onClick={(e) => handleNavClick(e, '#product-range')} 
+            className="mobile-sublink"
             data-testid="link-mobile-collections"
           >
-            Product Range / Collections
+            All Collections Overview
           </a>
-          {navItems.filter((i) => !i.href.startsWith('#')).map((item) => (
+          <div className="mobile-menu-divider" />
+          {navItems.map((item) => (
             <Link key={item.href} href={item.href} onClick={closeMenu} data-testid={`link-mobile-${item.label.toLowerCase().replaceAll(' ', '-')}`}>
               {item.label}
             </Link>
@@ -426,32 +739,49 @@ function Shell({ children }: { children: ReactNode }) {
 
 const heroSlides = [
   {
-    id: 'architectural-residence',
-    tag: 'Architectural Residence',
-    title: 'Precision-Engraved Rhythm',
-    subtitle: 'Geometric linear reliefs creating continuous acoustic warmth and diffuse natural light in modern living spaces.',
-    image: media.heroPanel,
+    id: 'mosaic-wall',
+    tag: 'Mosaic Collection · Wall Cladding',
+    title: 'Sound, shaped by nature.',
+    subtitle: 'Geometric pine needle acoustic panels clad across contemporary feature walls, dampening echo while transforming light and shadow.',
+    image: media.mosaicHero,
+    ctaLink: '/collections/mosaic',
+    ctaText: 'Explore Mosaic Wall',
   },
   {
-    id: 'spatial-interior',
-    tag: 'Spatial Acoustics',
-    title: 'Serene Acoustic Sanctuary',
-    subtitle: 'Natural sound-absorbing wall planes engineered for calm conversation and architectural clarity.',
-    image: media.architecturalInterior,
+    id: 'groove-wall',
+    tag: 'Groove Collection · CNC Engraved Wall',
+    title: 'Precision-Engraved Rhythm.',
+    subtitle: 'Continuous precision CNC channels carved into conifer needle wall slabs, absorbing speech reverberation in executive boardrooms.',
+    image: media.grooveHero,
+    ctaLink: '/collections/groove',
+    ctaText: 'Explore Groove Wall',
   },
   {
-    id: 'tactile-study',
-    tag: 'Natural Materiality',
-    title: 'Woven from Conifer Fibers',
-    subtitle: 'Authentic fibrous conifer needle textures creating a soothing forest atmosphere in contemporary interiors.',
-    image: media.firMaterialStudy,
+    id: 'faceted-wall',
+    tag: '3D Faceted Relief · Acoustic Feature Wall',
+    title: 'Faceted Forest Sanctuary.',
+    subtitle: 'Three-dimensional faceted conifer needle wall modules catching architectural grazing light, eliminating flutter echoes in modern interiors.',
+    image: media.pineStrongInterior,
+    ctaLink: '/collections/mosaic',
+    ctaText: 'Explore Faceted Wall',
   },
   {
-    id: 'material-intelligence',
-    tag: 'Bio-Circular Core',
-    title: '100% Bio-Bound Composition',
-    subtitle: 'Fallen forest needles bonded with biodegradable resins for zero-waste, high-performance acoustic surfaces.',
-    image: media.materialCloseup,
+    id: 'radius-wall',
+    tag: 'Radius Collection · Floating Island Wall',
+    title: 'Sculptural Acoustic Islands.',
+    subtitle: 'Soft-radius conifer needle panels floating organically across interior walls, delivering Class A sound absorption and architectural warmth.',
+    image: media.radiusHero,
+    ctaLink: '/collections/radius',
+    ctaText: 'Explore Radius Wall',
+  },
+  {
+    id: 'base-wall',
+    tag: 'The Base Collection · Modular Plain Slabs',
+    title: 'Monolithic Acoustic Planes.',
+    subtitle: 'Large modular sheets of raw conifer needle acoustic material installed seamlessly across double-height cultural and auditorium walls.',
+    image: media.baseHero,
+    ctaLink: '/collections/base',
+    ctaText: 'Explore Base Wall',
   },
 ];
 
@@ -498,7 +828,11 @@ function Hero() {
           </div>
 
           <h1 className="hero-cinematic-title">
-            Sound, shaped <em>by nature.</em>
+            {slide.title === 'Sound, shaped by nature.' ? (
+              <>Sound, shaped <em>by nature.</em></>
+            ) : (
+              slide.title
+            )}
           </h1>
 
           <p className="hero-cinematic-lead">
@@ -506,14 +840,13 @@ function Hero() {
           </p>
 
           <div className="hero-cinematic-actions">
-            <a 
-              href="#product-range" 
-              onClick={(e) => scrollToProductRange(e)} 
+            <Link 
+              href={slide.ctaLink} 
               className="btn-cinematic-primary" 
               data-testid="link-hero-collection"
             >
-              Explore Collections <ArrowUpRight size={15} />
-            </a>
+              {slide.ctaText} <ArrowUpRight size={15} />
+            </Link>
             <Link href="/contact" className="btn-cinematic-secondary" data-testid="link-hero-contact">
               Assistance for Projects
             </Link>
@@ -594,45 +927,47 @@ function Home() {
       {/* Marquee ticker */}
       <div className="marquee">
         <div>
-          FIR BRANCH <b>·</b> DRIED FIR NEEDLE <b>·</b> FIR NEEDLE PANELS <b>·</b> PINE STRONG MATERIAL <b>·</b> ECOLOGICAL ACOUSTICS <b>·</b> NATURAL POROSITY <b>·</b>
+          PINE FOREST <b>·</b> FALLEN PINE NEEDLES <b>·</b> COLLECTION & PREPARATION <b>·</b> PINE STRONG PANEL <b>·</b> ECOLOGICAL ACOUSTICS <b>·</b> NATURAL POROSITY <b>·</b>
         </div>
       </div>
 
-      {/* The Stage of Panels Creation */}
+      {/* The Stage of Panels Creation / Our Story */}
       <section className="section dark-section">
         <div className="container">
           <div className="process-head">
             <div>
-              <div className="eyebrow light">The stage of panels creation</div>
-              <h2 className="display">From forest floor to <em>finished room.</em></h2>
+              <div className="eyebrow light">Our Material Story</div>
+              <h2 className="display">From forest floor to <em>finished interior.</em></h2>
             </div>
-            <p className="body-copy">A short, considered journey. Nothing added that the material does not need.</p>
+            <p className="body-copy">
+              We transform fallen pine needles—once a contributor to forest-fire risk—into sustainable acoustic solutions for modern interiors.
+            </p>
           </div>
           <div className="process-grid-cards">
             {[
               {
                 number: '01',
-                title: 'Fir branch',
-                copy: 'A renewable source, gathered after the forest has done its work through seasonal pruning.',
-                image: media.stageBranch,
+                title: 'Pine Forest',
+                copy: 'Where the material begins. Fallen pine needles collect naturally beneath the trees across conifer forests.',
+                image: media.stagePineForest,
               },
               {
                 number: '02',
-                title: 'Dried fir needle',
-                copy: 'Sorted, air-dried and naturally prepared without harsh chemistry or synthetic additives.',
-                image: media.stageNeedles,
+                title: 'Fallen Pine Needles',
+                copy: 'Fallen pine needles are collected from the forest floor, mitigating seasonal wildfire hazards.',
+                image: media.stageFallenNeedles,
               },
               {
                 number: '03',
-                title: 'Fir needle panels',
-                copy: 'Pressed with a natural biodegradable binder into a dense, durable sound-absorbing body.',
-                image: media.stagePressed,
+                title: 'From Needles to Material',
+                copy: 'Prepared pine needles are transformed and bonded with a biodegradable binder into a durable acoustic core.',
+                image: media.stagePreparedMaterial,
               },
               {
                 number: '04',
-                title: 'PINE STRONG material',
-                copy: 'A tactile architectural surface with high acoustic sound absorption and forest texture.',
-                image: media.stageMaterial,
+                title: 'PINE STRONG',
+                copy: 'A sustainable acoustic material that brings the natural character and warmth of pine needles into modern interiors.',
+                image: media.stagePineStrongPanel,
               },
             ].map((step) => (
               <article className="process-card" key={step.number}>
@@ -654,12 +989,12 @@ function Home() {
         <div className="container quote-section">
           <div>
             <div className="eyebrow">Material intelligence</div>
-            <h2 className="display">Composite material from <em>fir needles.</em></h2>
+            <h2 className="display">Composite material from <em>pine needles.</em></h2>
             <p className="body-copy" style={{ marginTop: 24 }}>
-              PINE STRONG focuses on sustainable material usage without harming the environment. The sound-absorbing fiber material is based on conifer needles and a biodegradable binder.
+              PINE STRONG focuses on sustainable material usage without harming the environment. The sound-absorbing fiber material is based on fallen pine needles and a natural biodegradable binder.
             </p>
             <p className="body-copy" style={{ marginTop: 16 }}>
-              The natural color and tactile texture create a serene forest atmosphere in every interior while delivering lab-certified acoustic absorption.
+              The natural earth tones and tactile texture create a serene forest atmosphere in every interior while delivering lab-certified acoustic absorption.
             </p>
             <div style={{ marginTop: 30 }}>
               <Link href="/sustainability" className="btn-primary">
@@ -667,7 +1002,7 @@ function Home() {
               </Link>
             </div>
           </div>
-          <div className="material-showcase-image" style={{ backgroundImage: `url(${media.stageMaterial})` }}>
+          <div className="material-showcase-image" style={{ backgroundImage: `url(${media.stagePreparedMaterial})` }}>
             <div className="showcase-caption">TACTILE ACOUSTIC POROSITY</div>
           </div>
         </div>
@@ -797,14 +1132,727 @@ function Home() {
   );
 }
 
+function PatternTileIcon({ name, collectionSlug }: { name: string; collectionSlug: string }) {
+  const n = name.toLowerCase();
+  
+  if (collectionSlug === 'mosaic') {
+    if (n.includes('honeycomb') || n.includes('hex')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="30,8 44,16 44,32 30,40 16,32 16,16" />
+          <polygon points="44,32 58,40 58,56 44,64 30,56 30,40" />
+          <polygon points="16,32 30,40 30,56 16,64 2,56 2,40" />
+        </svg>
+      );
+    }
+    if (n.includes('diamond') || n.includes('pulse')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="30,6 48,24 30,42 12,24" />
+          <polygon points="30,22 42,34 30,46 18,34" />
+          <polygon points="30,38 38,46 30,54 22,46" />
+        </svg>
+      );
+    }
+    if (n.includes('trapeze') || n.includes('weave')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="12,12 48,12 38,28 22,28" />
+          <polygon points="22,32 38,32 48,48 12,48" />
+        </svg>
+      );
+    }
+    if (n.includes('chevron') || n.includes('triangle')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polyline points="8,20 30,34 52,20" />
+          <polyline points="8,30 30,44 52,30" />
+          <polyline points="8,10 30,24 52,10" />
+        </svg>
+      );
+    }
+    if (n.includes('constellation') || n.includes('rhombus')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="30,6 38,22 30,38 22,22" />
+          <polygon points="30,22 46,30 30,38 14,30" />
+          <polygon points="30,38 38,54 30,46 22,54" />
+        </svg>
+      );
+    }
+    if (n.includes('parallelogram') || n.includes('flow')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="16,10 44,10 34,26 6,26" />
+          <polygon points="26,30 54,30 44,46 16,46" />
+        </svg>
+      );
+    }
+    if (n.includes('prism') || n.includes('modular')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="30,10 48,20 30,30 12,20" />
+          <polygon points="12,20 30,30 30,50 12,40" />
+          <polygon points="30,30 48,20 48,40 30,50" />
+        </svg>
+      );
+    }
+    if (n.includes('diagonal') || n.includes('dynamic')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" stroke="currentColor" strokeWidth="1.8">
+          <line x1="10" y1="50" x2="50" y2="10" />
+          <line x1="10" y1="36" x2="36" y2="10" />
+          <line x1="24" y1="50" x2="50" y2="24" />
+        </svg>
+      );
+    }
+    if (n.includes('staggered') || n.includes('geo')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="8" y="10" width="20" height="12" />
+          <rect x="32" y="10" width="20" height="12" />
+          <rect x="18" y="26" width="24" height="12" />
+          <rect x="8" y="42" width="20" height="12" />
+          <rect x="32" y="42" width="20" height="12" />
+        </svg>
+      );
+    }
+    if (n.includes('monochromatic') || n.includes('relief')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="10" y="10" width="18" height="18" />
+          <rect x="32" y="10" width="18" height="18" strokeDasharray="3 3" />
+          <rect x="10" y="32" width="18" height="18" strokeDasharray="3 3" />
+          <rect x="32" y="32" width="18" height="18" />
+        </svg>
+      );
+    }
+    // Contrast Mosaic
+    return (
+      <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <polygon points="10,10 30,10 10,30" fill="currentColor" opacity="0.15" />
+        <polygon points="30,10 50,10 50,30" />
+        <polygon points="10,30 30,50 10,50" />
+        <polygon points="30,50 50,30 50,50" fill="currentColor" opacity="0.15" />
+      </svg>
+    );
+  }
+
+  if (collectionSlug === 'groove') {
+    if (n.includes('flute') || n.includes('continuous')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" stroke="currentColor" strokeWidth="1.8">
+          <line x1="12" y1="8" x2="12" y2="52" />
+          <line x1="21" y1="8" x2="21" y2="52" />
+          <line x1="30" y1="8" x2="30" y2="52" />
+          <line x1="39" y1="8" x2="39" y2="52" />
+          <line x1="48" y1="8" x2="48" y2="52" />
+        </svg>
+      );
+    }
+    if (n.includes('diamond') || n.includes('fold')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polygon points="30,10 50,30 30,50 10,30" />
+          <polygon points="30,18 42,30 30,42 18,30" />
+          <polygon points="30,24 36,30 30,36 24,30" />
+        </svg>
+      );
+    }
+    if (n.includes('chevron')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <polyline points="10,18 30,30 50,18" />
+          <polyline points="10,30 30,42 50,30" />
+          <polyline points="10,42 30,54 50,42" />
+        </svg>
+      );
+    }
+    if (n.includes('wave') || n.includes('radial') || n.includes('arc')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M10,50 A40,40 0 0,1 50,10" />
+          <path d="M18,50 A32,32 0 0,1 50,18" />
+          <path d="M26,50 A24,24 0 0,1 50,26" />
+          <path d="M34,50 A16,16 0 0,1 50,34" />
+        </svg>
+      );
+    }
+    if (n.includes('checkered') || n.includes('canvas')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" stroke="currentColor" strokeWidth="1.8">
+          <line x1="8" y1="18" x2="28" y2="18" />
+          <line x1="8" y1="24" x2="28" y2="24" />
+          <line x1="38" y1="10" x2="38" y2="30" />
+          <line x1="44" y1="10" x2="44" y2="30" />
+          <line x1="14" y1="34" x2="14" y2="54" />
+          <line x1="20" y1="34" x2="20" y2="54" />
+          <line x1="36" y1="42" x2="56" y2="42" />
+          <line x1="36" y1="48" x2="56" y2="48" />
+        </svg>
+      );
+    }
+    if (n.includes('hatch')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" stroke="currentColor" strokeWidth="1.8">
+          <line x1="12" y1="12" x2="48" y2="48" />
+          <line x1="12" y1="24" x2="36" y2="48" />
+          <line x1="24" y1="12" x2="48" y2="36" />
+          <line x1="48" y1="12" x2="12" y2="48" />
+          <line x1="36" y1="12" x2="12" y2="36" />
+        </svg>
+      );
+    }
+    if (n.includes('track')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="10" y="14" width="40" height="14" rx="7" />
+          <rect x="10" y="32" width="40" height="14" rx="7" />
+        </svg>
+      );
+    }
+    return (
+      <svg viewBox="0 0 60 60" width="56" height="56" stroke="currentColor" strokeWidth="1.8">
+        <line x1="10" y1="16" x2="50" y2="16" />
+        <line x1="10" y1="28" x2="50" y2="28" />
+        <line x1="10" y1="40" x2="50" y2="40" />
+      </svg>
+    );
+  }
+
+  if (collectionSlug === 'base') {
+    if (n.includes('monolithic')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="8" y="8" width="44" height="44" />
+        </svg>
+      );
+    }
+    if (n.includes('ashlar') || n.includes('brick')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="6" y="10" width="22" height="16" />
+          <rect x="32" y="10" width="22" height="16" />
+          <rect x="18" y="30" width="24" height="16" />
+          <line x1="6" y1="30" x2="14" y2="30" />
+          <line x1="46" y1="30" x2="54" y2="30" />
+        </svg>
+      );
+    }
+    if (n.includes('plank')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="10" y="8" width="9" height="44" />
+          <rect x="23" y="8" width="9" height="44" />
+          <rect x="36" y="8" width="9" height="44" />
+        </svg>
+      );
+    }
+    if (n.includes('square')) {
+      return (
+        <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="10" y="10" width="18" height="18" />
+          <rect x="32" y="10" width="18" height="18" />
+          <rect x="10" y="32" width="18" height="18" />
+          <rect x="32" y="32" width="18" height="18" />
+        </svg>
+      );
+    }
+    return (
+      <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <rect x="8" y="12" width="44" height="20" />
+        <rect x="8" y="34" width="44" height="14" />
+      </svg>
+    );
+  }
+
+  // Radius (Island)
+  if (n.includes('cloud') || n.includes('ceiling')) {
+    return (
+      <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <circle cx="22" cy="30" r="14" />
+        <circle cx="38" cy="30" r="14" />
+      </svg>
+    );
+  }
+  if (n.includes('island') || n.includes('floating')) {
+    return (
+      <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M16,42 L16,26 A14,14 0 0,1 44,26 L44,42 Z" />
+        <circle cx="46" cy="18" r="7" />
+      </svg>
+    );
+  }
+  if (n.includes('constellation')) {
+    return (
+      <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <circle cx="16" cy="20" r="8" />
+        <rect x="30" y="14" width="16" height="16" rx="5" />
+        <path d="M22,34 C22,46 38,46 42,36 Z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 60 60" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M14,44 L14,24 A16,16 0 0,1 46,24 L46,44 Z" />
+      <circle cx="30" cy="24" r="8" />
+    </svg>
+  );
+}
+
+function ShapeIcon({ name, collectionSlug }: { name: string; collectionSlug: string }) {
+  const n = name.toLowerCase();
+  
+  if (collectionSlug === 'mosaic') {
+    if (n.includes('rhombus') || n.includes('rombus')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="25,4 46,25 25,46 4,25" />
+        </svg>
+      );
+    }
+    if (n.includes('triangle a')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="25,5 45,43 5,43" />
+        </svg>
+      );
+    }
+    if (n.includes('triangle b')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="6,6 44,44 6,44" />
+        </svg>
+      );
+    }
+    if (n.includes('triangle c')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="6,8 44,8 25,42" />
+        </svg>
+      );
+    }
+    if (n.includes('trapeze')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="14,10 36,10 45,40 5,40" />
+        </svg>
+      );
+    }
+    if (n.includes('rectangle c')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="5" y="16" width="40" height="18" rx="1" />
+        </svg>
+      );
+    }
+    if (n.includes('rectangle b')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="8" y="10" width="34" height="30" rx="1" />
+        </svg>
+      );
+    }
+    if (n.includes('hexahedron') || n.includes('hexagon')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="25,5 44,15 44,35 25,45 6,35 6,15" />
+        </svg>
+      );
+    }
+    if (n.includes('rectangle a')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="13" y="6" width="24" height="38" rx="1" />
+        </svg>
+      );
+    }
+    if (n.includes('square')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="8" y="8" width="34" height="34" rx="1" />
+        </svg>
+      );
+    }
+    if (n.includes('parallelogram a')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="16,10 44,10 34,40 6,40" />
+        </svg>
+      );
+    }
+    if (n.includes('parallelogram b')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <polygon points="6,10 34,10 44,40 16,40" />
+        </svg>
+      );
+    }
+  }
+
+  if (collectionSlug === 'radius' || collectionSlug === 'island') {
+    if (n.includes('arko')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <path d="M10,40 L10,24 A15,15 0 0,1 40,24 L40,40 Z" />
+        </svg>
+      );
+    }
+    if (n.includes('rhomus') || n.includes('rhombus')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="13" y="13" width="24" height="24" rx="7" transform="rotate(45 25 25)" />
+        </svg>
+      );
+    }
+    if (n.includes('rectangle')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="6" y="14" width="38" height="22" rx="8" />
+        </svg>
+      );
+    }
+    if (n.includes('delta')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <path d="M25,8 Q43,40 38,41 Q25,38 12,41 Q7,40 25,8 Z" />
+        </svg>
+      );
+    }
+    if (n.includes('round')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <circle cx="25" cy="25" r="18" />
+        </svg>
+      );
+    }
+    if (n.includes('square')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <rect x="8" y="8" width="34" height="34" rx="9" />
+        </svg>
+      );
+    }
+    if (n.includes('petal')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <path d="M10,40 C10,14 38,10 40,38 C26,43 14,42 10,40 Z" />
+        </svg>
+      );
+    }
+  }
+
+  if (collectionSlug === 'groove') {
+    if (n.includes('lego')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="8" y="16" width="34" height="24" rx="2" />
+          <rect x="14" y="10" width="8" height="6" fill="currentColor" />
+          <rect x="28" y="10" width="8" height="6" fill="currentColor" />
+        </svg>
+      );
+    }
+    if (n.includes('dot') || n.includes('polka')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46">
+          <circle cx="16" cy="16" r="3.5" fill="currentColor" />
+          <circle cx="34" cy="16" r="3.5" fill="currentColor" />
+          <circle cx="16" cy="34" r="3.5" fill="currentColor" />
+          <circle cx="34" cy="34" r="3.5" fill="currentColor" />
+        </svg>
+      );
+    }
+    if (n.includes('lapky')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M14,36 C14,24 24,18 25,14 C26,18 36,24 36,36 C32,40 18,40 14,36 Z" />
+          <circle cx="20" cy="16" r="2.5" fill="currentColor" />
+          <circle cx="30" cy="16" r="2.5" fill="currentColor" />
+        </svg>
+      );
+    }
+    if (n.includes('berry')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46">
+          <circle cx="25" cy="20" r="2.8" fill="currentColor" />
+          <circle cx="18" cy="28" r="2.8" fill="currentColor" />
+          <circle cx="32" cy="28" r="2.8" fill="currentColor" />
+          <circle cx="22" cy="36" r="2.8" fill="currentColor" />
+          <circle cx="28" cy="36" r="2.8" fill="currentColor" />
+        </svg>
+      );
+    }
+    if (n.includes('fun')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="8" y1="12" x2="38" y2="40" />
+          <line x1="22" y1="8" x2="44" y2="28" />
+          <line x1="10" y1="36" x2="32" y2="44" />
+        </svg>
+      );
+    }
+    if (n.includes('plain')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="8" y="10" width="34" height="30" rx="1" />
+        </svg>
+      );
+    }
+    if (n.includes('diagonal lines 01')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2">
+          <line x1="8" y1="38" x2="38" y2="8" />
+          <line x1="12" y1="42" x2="42" y2="12" />
+        </svg>
+      );
+    }
+    if (n.includes('diagonal lines 02')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2">
+          <line x1="8" y1="42" x2="42" y2="8" />
+          <line x1="8" y1="26" x2="26" y2="8" />
+          <line x1="24" y1="42" x2="42" y2="24" />
+        </svg>
+      );
+    }
+    if (n.includes('diagonal lines 03')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2">
+          <line x1="6" y1="44" x2="44" y2="6" />
+          <line x1="6" y1="22" x2="22" y2="6" />
+          <line x1="28" y1="44" x2="44" y2="28" />
+          <line x1="6" y1="34" x2="34" y2="6" />
+          <line x1="16" y1="44" x2="44" y2="16" />
+        </svg>
+      );
+    }
+    if (n.includes('hatch 01')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="1.8">
+          <line x1="8" y1="20" x2="42" y2="20" />
+          <line x1="8" y1="30" x2="42" y2="30" />
+          <line x1="20" y1="8" x2="20" y2="42" />
+          <line x1="30" y1="8" x2="30" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('hatch 02')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="1.6">
+          <line x1="8" y1="16" x2="42" y2="16" />
+          <line x1="8" y1="25" x2="42" y2="25" />
+          <line x1="8" y1="34" x2="42" y2="34" />
+          <line x1="16" y1="8" x2="16" y2="42" />
+          <line x1="25" y1="8" x2="25" y2="42" />
+          <line x1="34" y1="8" x2="34" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('lines 04')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="1.6">
+          <line x1="12" y1="8" x2="12" y2="42" />
+          <line x1="18" y1="8" x2="18" y2="42" />
+          <line x1="24" y1="8" x2="24" y2="42" />
+          <line x1="30" y1="8" x2="30" y2="42" />
+          <line x1="36" y1="8" x2="36" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('rectangular')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="8" y="10" width="34" height="30" rx="1" />
+          <rect x="15" y="17" width="20" height="16" rx="1" />
+        </svg>
+      );
+    }
+    if (n.includes('lines 03')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2">
+          <line x1="14" y1="8" x2="14" y2="42" />
+          <line x1="25" y1="8" x2="25" y2="42" />
+          <line x1="36" y1="8" x2="36" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('lines 02')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2.2">
+          <line x1="18" y1="8" x2="18" y2="42" />
+          <line x1="32" y1="8" x2="32" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('checkered 01')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2">
+          <line x1="8" y1="25" x2="42" y2="25" />
+          <line x1="25" y1="8" x2="25" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('checkered 02')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="1.8">
+          <line x1="8" y1="20" x2="42" y2="20" />
+          <line x1="8" y1="32" x2="42" y2="32" />
+          <line x1="20" y1="8" x2="20" y2="20" />
+          <line x1="30" y1="20" x2="30" y2="32" />
+          <line x1="20" y1="32" x2="20" y2="42" />
+        </svg>
+      );
+    }
+    if (n.includes('checkered 03')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="1.8">
+          <line x1="12" y1="16" x2="22" y2="16" />
+          <line x1="12" y1="22" x2="22" y2="22" />
+          <line x1="32" y1="12" x2="32" y2="24" />
+          <line x1="38" y1="12" x2="38" y2="24" />
+          <line x1="16" y1="28" x2="16" y2="40" />
+          <line x1="22" y1="28" x2="22" y2="40" />
+          <line x1="28" y1="34" x2="38" y2="34" />
+          <line x1="28" y1="40" x2="38" y2="40" />
+        </svg>
+      );
+    }
+    if (n.includes('arc 01')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <path d="M10,40 A24,24 0 0,1 40,10" />
+        </svg>
+      );
+    }
+    if (n.includes('arc 02')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M10,40 A26,26 0 0,1 40,10" />
+          <path d="M18,40 A18,18 0 0,1 40,18" />
+        </svg>
+      );
+    }
+    if (n.includes('arc 03')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M8,42 A28,28 0 0,1 42,8" />
+          <path d="M16,42 A20,20 0 0,1 42,16" />
+          <path d="M24,42 A12,12 0 0,1 42,24" />
+        </svg>
+      );
+    }
+    if (n.includes('track 01')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="10" y="18" width="30" height="14" rx="7" />
+        </svg>
+      );
+    }
+    if (n.includes('track 02')) {
+      return (
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="8" y="13" width="34" height="10" rx="5" />
+          <rect x="8" y="27" width="34" height="10" rx="5" />
+        </svg>
+      );
+    }
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" stroke="currentColor" strokeWidth="2">
+        <line x1="8" y1="16" x2="42" y2="16" />
+        <line x1="8" y1="25" x2="42" y2="25" />
+        <line x1="8" y1="34" x2="42" y2="34" />
+      </svg>
+    );
+  }
+
+  // The Base (8 modular plain sizes with proportional rectangles)
+  if (n.includes('165 × 571') || n.includes('165x571')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="18.5" y="3" width="13" height="44" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('330 × 571') || n.includes('330x571')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="12.5" y="3" width="25" height="44" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('660 × 1143') || n.includes('660x1143')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="12" y="2.5" width="26" height="45" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('165 × 285') || n.includes('165x285')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="17" y="11" width="16" height="28" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('570 × 1140') || n.includes('570x1140')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="14" y="3" width="22" height="44" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('570 × 570') || n.includes('570x570')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="7" y="7" width="36" height="36" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('285 × 570') || n.includes('285x570')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="15.5" y="6" width="19" height="38" rx="1" />
+      </svg>
+    );
+  }
+  if (n.includes('285 × 285') || n.includes('285x285')) {
+    return (
+      <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+        <rect x="12" y="12" width="26" height="26" rx="1" />
+      </svg>
+    );
+  }
+
+  // Base fallback
+  return (
+    <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" strokeWidth="2">
+      <rect x="9" y="13" width="32" height="24" rx="1" />
+    </svg>
+  );
+}
+
 function CollectionPage() {
   const { slug } = useParams<{ slug: string }>();
-  const collection = collections.find((item) => item.slug === slug) ?? collections[0];
+  // Support both 'radius' and legacy 'island'
+  const normalizedSlug = slug === 'island' ? 'radius' : slug;
+  const collection = collections.find((item) => item.slug === normalizedSlug) ?? collections[0];
   const related = collections.filter((item) => item.slug !== collection.slug);
+  
+  const [selectedShape, setSelectedShape] = useState<ProductShape>(collection.shapes[0]);
+  const [selectedPattern, setSelectedPattern] = useState<number>(0);
   const [selectedColor, setSelectedColor] = useState(colorPalette[0]);
+
+  // Keep state updated on slug navigation
+  useEffect(() => {
+    setSelectedShape(collection.shapes[0]);
+    setSelectedPattern(0);
+  }, [collection.slug]);
+
+  const currentPattern = collection.patterns[selectedPattern] || collection.patterns[0];
 
   return (
     <Shell>
+      {/* 1. Collection Hero Header */}
       <section className="page-hero collection-hero">
         <div className="container">
           <div className="back-nav-bar">
@@ -818,83 +1866,265 @@ function CollectionPage() {
             <span className="back-nav-sep">/</span>
             <span className="back-nav-current">{collection.name}</span>
           </div>
-          <div className="eyebrow">{collection.kicker} · PINE STRONG Collection</div>
+          <div className="eyebrow">Wall Panels · PINE STRONG Collection</div>
           <h1 className="display">{collection.name}</h1>
           <p className="body-copy">{collection.tagline}</p>
         </div>
       </section>
 
-      {/* Hero Visual Showcase */}
+      {/* Hero Visual Showcase Banner */}
       <div className="container">
-        <div className="collection-hero-image" style={{ backgroundImage: `url(${collection.image})` }} aria-label={collection.name} />
+        <div 
+          className="collection-hero-image" 
+          style={{ backgroundImage: `url(${collection.heroImage})` }} 
+          aria-label={collection.name} 
+        />
       </div>
 
       {/* Description & Overview */}
       <section className="section">
-        <div className="container collection-intro">
-          <div>
-            <div className="eyebrow">The Collection Concept</div>
-            <h2 className="display">A surface that <em>changes the room.</em></h2>
-          </div>
-          <div>
-            <p>{collection.longDescription}</p>
-            <div style={{ marginTop: 30 }}>
-              <Link href="/contact" className="btn-primary" data-testid={`link-collection-contact-${collection.slug}`}>
-                Request material samples <ArrowRight size={15} />
-              </Link>
+        <div className="container">
+          <div className="collection-intro">
+            <div>
+              <div className="eyebrow">The Collection Concept</div>
+              <h2 className="display">A surface that <em>changes the room.</em></h2>
             </div>
-          </div>
-        </div>
-
-        {/* Technical Specs */}
-        <div className="container spec-grid-4">
-          <div className="spec">
-            <b>Primary application</b>
-            <span>{collection.application}</span>
-          </div>
-          <div className="spec">
-            <b>Standard formats</b>
-            <span>{collection.formats}</span>
-          </div>
-          <div className="spec">
-            <b>Thickness & Relief</b>
-            <span>{collection.thickness} ({collection.relief})</span>
-          </div>
-          <div className="spec">
-            <b>Acoustic Performance</b>
-            <span>{collection.absorption}</span>
+            <div>
+              <p>{collection.longDescription}</p>
+              <div style={{ marginTop: 28 }}>
+                <Link href="/contact" className="btn-primary" data-testid={`link-collection-contact-${collection.slug}`}>
+                  Request material samples <ArrowRight size={15} />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Pattern System / Options */}
+      {/* 2. Creative Freedom with Many Patterns */}
       <section className="section dark-section">
         <div className="container">
           <div className="section-head-center">
             <div className="eyebrow light">Creative freedom</div>
-            <h2 className="display">Available <em>patterns & configurations.</em></h2>
-            <p className="body-copy">Choose from our curated architectural patterns or design a bespoke rhythmic relief for your project.</p>
+            <h2 className="display">{collection.patternTitle}</h2>
+            <p className="body-copy">
+              {collection.patternSubtitle || 'Explore our curated architectural pattern configurations or compose a bespoke rhythmic relief tailored specifically to your project dimensions.'}
+            </p>
           </div>
 
-          <div className="pattern-tags-grid">
+          <div className="pattern-catalogue-grid">
             {collection.patterns.map((pattern, idx) => (
-              <div className="pattern-pill-card" key={pattern}>
-                <span className="pattern-pill-num">0{idx + 1}</span>
-                <span className="pattern-pill-title">{pattern}</span>
+              <div 
+                className={`pattern-visual-card ${selectedPattern === idx ? 'active' : ''}`} 
+                key={pattern.name}
+                onClick={() => setSelectedPattern(idx)}
+                data-testid={`card-pattern-${idx}`}
+              >
+                <div className="pattern-thumb-wrap">
+                  <PatternTileIcon name={pattern.name} collectionSlug={collection.slug} />
+                </div>
+                <div className="pattern-card-meta">
+                  <span className="pattern-card-num">0{idx + 1}</span>
+                  <span className="pattern-card-title">{pattern.name}</span>
+                </div>
+                <div className="pattern-card-desc">{pattern.tagline}</div>
               </div>
             ))}
+          </div>
+
+          {/* Pattern Detail Drawer */}
+          {currentPattern && (
+            <div className="pattern-drawer">
+              <div className="pattern-drawer-preview">
+                <PatternTileIcon name={currentPattern.name} collectionSlug={collection.slug} />
+              </div>
+              <div className="pattern-drawer-info">
+                <h4>{currentPattern.name} · Architectural Arrangement</h4>
+                <p>{currentPattern.layoutDescription}</p>
+              </div>
+              <Link href={`/contact?collection=${collection.slug}&pattern=${encodeURIComponent(currentPattern.name)}`} className="btn-primary">
+                Specify this Pattern <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 3. The Shape / Format System Section */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head-center">
+            <div className="eyebrow">Product System</div>
+            <h2 className="display">{collection.systemTitle}</h2>
+            <p className="body-copy">{collection.systemDescription}</p>
+          </div>
+
+          <div className="shapes-catalogue-grid">
+            {collection.shapes.map((s) => (
+              <div 
+                className={`shape-item-card ${selectedShape.name === s.name ? 'active' : ''}`} 
+                key={s.name}
+                onClick={() => setSelectedShape(s)}
+                data-testid={`card-shape-${s.name.toLowerCase().replaceAll(' ', '-')}`}
+              >
+                <div className="shape-preview-box">
+                  <ShapeIcon name={s.name} collectionSlug={collection.slug} />
+                </div>
+                <div className="shape-item-name">{s.name}</div>
+                {s.dimensions && <div className="shape-item-dim">{s.dimensions}</div>}
+                {s.description && (
+                  <div style={{ color: '#888888', fontSize: 11, marginTop: 4, lineHeight: 1.3 }}>
+                    {s.description}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Interactive Shape Inspector Card */}
+          {selectedShape && (
+            <div className="shape-inspector-card">
+              <div className="shape-inspector-grid">
+                <div className="shape-inspector-visual">
+                  <ShapeIcon name={selectedShape.name} collectionSlug={collection.slug} />
+                  <span className="shape-inspector-dim-tag">{selectedShape.dimensions || 'Modular Unit'}</span>
+                </div>
+                <div>
+                  <div className="eyebrow" style={{ color: 'var(--forest)' }}>Shape Inspector · {collection.name}</div>
+                  <h3 style={{ fontSize: 24, margin: '4px 0 8px' }}>{selectedShape.name}</h3>
+                  <p style={{ color: '#555555', fontSize: 14, margin: 0 }}>
+                    {selectedShape.description} — Fabricated from 100% genuine fallen pine needles bonded with formaldehyde-free biodegradable resins.
+                  </p>
+                  <div className="shape-inspector-specs">
+                    <div className="shape-spec-item">
+                      <small>Dimensions</small>
+                      <span>{selectedShape.dimensions || collection.formats}</span>
+                    </div>
+                    <div className="shape-spec-item">
+                      <small>Unit Area</small>
+                      <span>{selectedShape.area || 'Modular'}</span>
+                    </div>
+                    <div className="shape-spec-item">
+                      <small>Core Thickness</small>
+                      <span>{selectedShape.thickness || collection.thickness}</span>
+                    </div>
+                    <div className="shape-spec-item">
+                      <small>Absorption NRC</small>
+                      <span>NRC {selectedShape.absorptionNRC || '0.85'}</span>
+                    </div>
+                  </div>
+                </div>
+                <Link 
+                  href={`/contact?collection=${collection.slug}&shape=${encodeURIComponent(selectedShape.name)}`} 
+                  className="btn-primary"
+                  data-testid="btn-shape-sample"
+                >
+                  Order {selectedShape.name} Sample <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* Featured Catalogue Plate (For Mosaic) */}
+          {collection.compositePlate && (
+            <div className="featured-plate-wrap">
+              <img 
+                src={collection.compositePlate} 
+                alt="PINE STRONG Mosaic geometric shapes catalog overview" 
+                className="featured-plate-img" 
+              />
+              <div className="featured-plate-caption">
+                <span>Catalogue Plate · Geometric Figures Matrix</span>
+                <span>PINE STRONG Acoustic Materials</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 4. Variety of panels (Product Details, Relief & Thickness) */}
+      <section className="section dark-section">
+        <div className="container">
+          <div className="section-head-center">
+            <div className="eyebrow light">Tactile Materiality</div>
+            <h2 className="display">Variety of <em>panels & relief.</em></h2>
+            <p className="body-copy">
+              Preserving the natural fibrous structure of fallen conifer needles with precision CNC relief, calibrated core thicknesses, and clean architectural edge details.
+            </p>
+          </div>
+
+          <div className="panel-variety-grid">
+            <div className="panel-variety-card">
+              <div className="panel-variety-header">
+                <div className="panel-variety-icon"><Leaf size={20} /></div>
+                <h4>Natural Needle Matrix</h4>
+              </div>
+              <p>Unbleached fallen conifer needles form a dense, three-dimensional acoustic mesh with porous micro-cavities that absorb airborne sound without synthetic membranes.</p>
+              <span className="panel-variety-tag">100% Bio-Bound Core</span>
+            </div>
+
+            <div className="panel-variety-card">
+              <div className="panel-variety-header">
+                <div className="panel-variety-icon"><Layers size={20} /></div>
+                <h4>Precision CNC Relief</h4>
+              </div>
+              <p>CNC-routed channels carved to depths of 8 mm to 18 mm produce directional acoustic diffusion while revealing the contrasting fibrous interior tone.</p>
+              <span className="panel-variety-tag">8–18 mm Relief Depth</span>
+            </div>
+
+            <div className="panel-variety-card">
+              <div className="panel-variety-header">
+                <div className="panel-variety-icon"><ShieldCheck size={20} /></div>
+                <h4>Engineered Edge Profiles</h4>
+              </div>
+              <p>Available with 45° micro-bevels to celebrate modular seams, seamless butt-joints for monolithic wall planes, or soft rounded bullnoses for organic islands.</p>
+              <span className="panel-variety-tag">Micro-bevel / Seamless</span>
+            </div>
+
+            <div className="panel-variety-card">
+              <div className="panel-variety-header">
+                <div className="panel-variety-icon"><Volume2 size={20} /></div>
+                <h4>Calibrated Thickness</h4>
+              </div>
+              <p>Engineered in 12 mm lightweight wall cladding, 18 mm architectural panels, and 25 mm high-performance acoustic cores achieving up to NRC 0.92.</p>
+              <span className="panel-variety-tag">NRC 0.85 – 0.92 Class A/B</span>
+            </div>
+          </div>
+
+          {/* Material Close-Up Showcase */}
+          <div className="material-dual-showcase">
+            <div 
+              className="material-feature-photo" 
+              style={{ backgroundImage: `url(${collection.materialImage})` }}
+              aria-label="PINE STRONG natural pine needle acoustic material closeup"
+            >
+              <div className="material-photo-caption">AUTHENTIC FALLEN PINE NEEDLE TEXTURE</div>
+            </div>
+            <div className="material-feature-info">
+              <div className="eyebrow light">Bio-Material Credentials</div>
+              <h3 style={{ color: '#FFFFFF' }}>Porous, bio-bound conifer needles.</h3>
+              <p style={{ color: '#BBBBBB' }}>
+                Each panel brings the genuine character of conifer needles into the interior. The organic orientation of the needles creates micro-voids that trap sound energy, providing lab-tested acoustic absorption without artificial coatings.
+              </p>
+              <div className="material-badge-list">
+                <span className="material-badge-item" style={{ background: '#222', color: '#FFF', borderColor: '#444' }}>100% Fallen Needles</span>
+                <span className="material-badge-item" style={{ background: '#222', color: '#FFF', borderColor: '#444' }}>Bio-degradable Binder</span>
+                <span className="material-badge-item" style={{ background: '#222', color: '#FFF', borderColor: '#444' }}>Formaldehyde-Free</span>
+                <span className="material-badge-item" style={{ background: '#222', color: '#FFF', borderColor: '#444' }}>Fireproof Class B-s1, d0</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Natural Color Palette Section */}
+      {/* 5. Natural Color Palette Section */}
       <section className="section">
         <div className="container">
           <div className="section-head-center">
             <div className="eyebrow">Natural palette</div>
             <h2 className="display">Preserving the <em>noble shades of nature.</em></h2>
             <p className="body-copy">
-              The natural color of dry pine needles is Olive—the baseline of our palette. We use careful gentle toning to preserve the authentic needle texture while offering rich architectural tones.
+              The natural color of dry pine needles is Olive—it&apos;s the basic color of our palette. We use careful gentle toning to preserve the natural texture. The noble shades of olive, brown and terracotta give the panels a natural charm just as nature does.
             </p>
           </div>
 
@@ -917,19 +2147,51 @@ function CollectionPage() {
               <b>Selected Tonal Finish: {selectedColor.name}</b>
               <p>{selectedColor.desc}</p>
             </div>
-            <Link href="/contact" className="btn-quiet">
+            <Link href={`/contact?collection=${collection.slug}&color=${encodeURIComponent(selectedColor.name)}`} className="btn-quiet">
               Order {selectedColor.name} Sample <ArrowUpRight size={14} />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Features */}
+      {/* 6. Interior Applications Showcase */}
       <section className="section dark-section">
         <div className="container">
           <div className="section-head-center">
-            <div className="eyebrow light">Core advantages</div>
-            <h2 className="display">Engineered for <em>performance and longevity.</em></h2>
+            <div className="eyebrow light">Architectural Realization</div>
+            <h2 className="display">In situ <em>applications.</em></h2>
+            <p className="body-copy">
+              Explore real architectural spaces where PINE STRONG {collection.name} panels deliver auditory comfort, spatial intimacy, and biophilic presence.
+            </p>
+          </div>
+
+          <div className="interior-gallery-grid">
+            {collection.interiors.map((proj) => (
+              <div className="interior-gallery-card" key={proj.title}>
+                <div 
+                  className="interior-gallery-image" 
+                  style={{ backgroundImage: `url(${proj.image})` }} 
+                />
+                <div className="interior-gallery-content">
+                  <small style={{ font: '600 10px var(--mono)', color: 'var(--forest)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                    {proj.category} · {proj.acousticNote}
+                  </small>
+                  <h4 style={{ marginTop: 6 }}>{proj.title}</h4>
+                  <p>{proj.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Features of PINE STRONG Wall Panels */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head-center">
+            <div className="eyebrow">Why choose us</div>
+            <h2 className="display">Features of PINE STRONG <em>wall panels.</em></h2>
+            <p className="body-copy">Engineered for acoustic excellence, spatial well-being, and architectural longevity.</p>
           </div>
 
           <div className="features-grid">
@@ -949,15 +2211,15 @@ function CollectionPage() {
         </div>
       </section>
 
-      {/* Related Collections */}
-      <section className="section related">
+      {/* 8. Continue Exploring (Related Collections) */}
+      <section className="section dark-section related">
         <div className="container">
-          <div className="eyebrow">Continue exploring</div>
+          <div className="eyebrow light">Continue exploring</div>
           <h2 className="display">More ways to <em>shape sound.</em></h2>
           <div className="related-grid">
             {related.map((item) => (
               <Link href={`/collections/${item.slug}`} className="related-link" key={item.slug} data-testid={`link-related-${item.slug}`}>
-                <div className="mini-art" style={{ backgroundImage: `url(${item.image})` }} />
+                <div className="mini-art" style={{ backgroundImage: `url(${item.heroImage})` }} />
                 <small>{item.kicker}</small>
                 <h3>{item.name}</h3>
                 <p className="body-copy" style={{ fontSize: 13, marginTop: 8 }}>{item.description}</p>
@@ -967,14 +2229,17 @@ function CollectionPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* 9. CTA Band */}
       <section className="cta-band">
         <div className="container cta-band-inner">
           <div>
             <div className="eyebrow light">Specify with confidence</div>
             <h2 className="display">Let&apos;s talk about your project.</h2>
+            <p className="body-copy" style={{ marginTop: 10 }}>
+              Need custom relief patterns, CAD/BIM block models, or a physical sample box for your architectural studio?
+            </p>
           </div>
-          <Link href="/contact" className="btn-primary" data-testid={`link-collection-cta-${collection.slug}`}>
+          <Link href={`/contact?collection=${collection.slug}`} className="btn-primary" data-testid={`link-collection-cta-${collection.slug}`}>
             Assistance for projects <ArrowUpRight size={15} />
           </Link>
         </div>
@@ -1105,7 +2370,7 @@ function Sustainability() {
           <div className="eyebrow light">The material, honestly</div>
           <h1 className="display">Nothing wasted.<br /><em>Nothing hidden.</em></h1>
           <p className="body-copy">
-            We have unlocked the potential of conifer needles harmless to nature. The result is a high-performing composite material from fir needles, made for a longer life indoors.
+            We have unlocked the potential of conifer needles harmless to nature. The result is a high-performing composite material from fallen pine needles, made for a longer life indoors.
           </p>
         </div>
       </section>
@@ -1118,14 +2383,14 @@ function Sustainability() {
             <div className="sustain-card">
               <h3>PINE STRONG® material</h3>
               <p>
-                Fir needles are collected after seasonal pruning and forest maintenance. We dry, refine and bind them into panels without turning their origin into a marketing finish.
+                Fallen pine needles are collected from the forest floor, mitigating wildfire risks while preserving living trees. We dry, refine and bind them into panels without turning their origin into a marketing finish.
               </p>
             </div>
           </div>
           <div className="material-loop">
             {[
-              ['01', 'Collected with restraint', 'We work with existing forestry cycles, never asking a forest to produce more than it naturally gives.'],
-              ['02', 'Dried by air and time', 'Preparation preserves the needle fibre and keeps the process low-energy.'],
+              ['01', 'Collected with restraint', 'We collect fallen needles from the forest floor, never asking a forest to produce more than it naturally sheds.'],
+              ['02', 'Dried by air and time', 'Preparation preserves the natural needle fibre structure and keeps the process low-energy.'],
               ['03', 'Bound for a long life', 'A biodegradable binder gives the panel its form, strength and acoustic porosity.'],
               ['04', 'Returned to the cycle', 'At end of life, the material is designed to be separated and responsibly processed.'],
             ].map(([number, title, copy]) => (
@@ -1196,7 +2461,7 @@ function About() {
         <div className="container about-grid">
           <div 
             className="large-art" 
-            style={{ backgroundImage: `url(${media.stageMaterial})` }} 
+            style={{ backgroundImage: `url(${media.stagePineStrongPanel})` }} 
             aria-label="Textured natural pine fiber material" 
           />
           <div className="about-copy">
@@ -1223,7 +2488,7 @@ function About() {
             <article>
               <b>01</b>
               <h3>Stay close to the source</h3>
-              <p>We keep the story of the material visible from fir branch to finished panel.</p>
+              <p>We keep the story of the material visible from forest floor to finished panel.</p>
             </article>
             <article>
               <b>02</b>
