@@ -664,11 +664,42 @@ function Header() {
 
 function Footer() {
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const submitNewsletter = (event: FormEvent) => {
+  const submitNewsletter = async (event: FormEvent) => {
     event.preventDefault();
-    if (email.trim()) setSent(true);
+    if (!email.trim()) return;
+
+    setStatus('loading');
+    setErrorMsg('');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/pranavpinestrong@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          _subject: `New Newsletter Subscriber: ${email.trim()}`,
+          _captcha: 'false',
+          _template: 'table'
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success !== 'false') {
+        setStatus('success');
+      } else {
+        throw new Error(data.message || 'Subscription failed');
+      }
+    } catch (err: any) {
+      console.error('Newsletter error:', err);
+      setStatus('error');
+      setErrorMsg('Could not subscribe right now. Please email pranavpinestrong@gmail.com directly.');
+    }
   };
 
   return (
@@ -679,25 +710,33 @@ function Footer() {
             <h3>Stay in touch with material innovation.</h3>
             <p>New collection releases, acoustic research papers, and architectural completed spaces. A few times a season.</p>
           </div>
-          {sent ? (
+          {status === 'success' ? (
             <div className="form-success" data-testid="status-newsletter-success">
               Thank you! You are on our architectural notes list.
             </div>
           ) : (
-            <form className="newsletter-form" onSubmit={submitNewsletter}>
-              <input 
-                type="email" 
-                required 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                placeholder="What's your email?" 
-                aria-label="Your email address" 
-                data-testid="input-newsletter-email" 
-              />
-              <button type="submit" data-testid="button-newsletter-submit">
-                Subscribe <ArrowUpRight size={14} />
-              </button>
-            </form>
+            <div>
+              <form className="newsletter-form" onSubmit={submitNewsletter}>
+                <input 
+                  type="email" 
+                  required 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  placeholder="What's your email?" 
+                  aria-label="Your email address" 
+                  data-testid="input-newsletter-email" 
+                  disabled={status === 'loading'}
+                />
+                <button type="submit" disabled={status === 'loading'} data-testid="button-newsletter-submit">
+                  {status === 'loading' ? 'Subscribing...' : <>Subscribe <ArrowUpRight size={14} /></>}
+                </button>
+              </form>
+              {status === 'error' && (
+                <div className="form-error">
+                  {errorMsg}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </section>
@@ -715,11 +754,22 @@ function Footer() {
             <Link href="/sustainability" data-testid="link-footer-sustainability">Sustainability</Link>
             <Link href="/about" data-testid="link-footer-about">About us</Link>
             <Link href="/contact" data-testid="link-footer-contact">Assistance for projects</Link>
-            <a href="mailto:studio@pinestrong.com" data-testid="link-footer-email">studio@pinestrong.com</a>
+            <a href="mailto:pranavpinestrong@gmail.com" data-testid="link-footer-email">pranavpinestrong@gmail.com</a>
           </div>
         </div>
         <div className="container footer-bottom">
           <span>© 2026 PINE STRONG® / Natural Acoustic Materials. All rights reserved.</span>
+          <span className="footer-credit">
+            Designed and developed by{' '}
+            <a
+              href="https://beyontrix.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="link-footer-beyontrix"
+            >
+              Beyontrix
+            </a>
+          </span>
           <span>Navi Mumbai, India</span>
         </div>
       </footer>
@@ -2507,11 +2557,79 @@ function About() {
 }
 
 function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+  const getInitialCollection = () => {
+    if (typeof window === 'undefined') return 'All Collections';
+    const params = new URLSearchParams(window.location.search);
+    const col = params.get('collection');
+    if (col === 'groove') return 'Groove Collection';
+    if (col === 'mosaic') return 'Mosaic Collection';
+    if (col === 'base') return 'The Base Collection';
+    if (col === 'island-wall') return 'Island Wall Collection';
+    return 'All Collections';
+  };
 
-  const submit = (event: FormEvent<HTMLFormElement>) => {
+  const getInitialMessage = () => {
+    if (typeof window === 'undefined') return '';
+    const params = new URLSearchParams(window.location.search);
+    const pattern = params.get('pattern');
+    if (pattern) return `Inquiring about pattern: ${pattern}`;
+    return '';
+  };
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    projectType: '',
+    collection: getInitialCollection(),
+    message: getInitialMessage()
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/pranavpinestrong@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          project_type: formData.projectType,
+          collection: formData.collection,
+          message: formData.message,
+          _subject: `New Project Enquiry: ${formData.name || 'Website Visitor'}`,
+          _captcha: 'false',
+          _template: 'table'
+        })
+      });
+
+      const data = await response.json();
+      if (response.ok && data.success !== 'false') {
+        setStatus('success');
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    } catch (err: any) {
+      console.error('Contact form error:', err);
+      setStatus('error');
+      setErrorMessage(
+        'There was an issue sending your message. Please try again or email us directly at pranavpinestrong@gmail.com.'
+      );
+    }
   };
 
   return (
@@ -2542,29 +2660,83 @@ function Contact() {
                 <MapPin size={14} style={{ verticalAlign: 'middle', marginRight: 8 }} /> Navi Mumbai, India
               </div>
               <div>
-                <Mail size={14} style={{ verticalAlign: 'middle', marginRight: 8 }} /> studio@pinestrong.com
+                <Mail size={14} style={{ verticalAlign: 'middle', marginRight: 8 }} /> pranavpinestrong@gmail.com
               </div>
             </div>
           </div>
 
           <div>
-            {submitted ? (
+            {status === 'success' ? (
               <div className="contact-success" data-testid="status-contact-success">
-                Thank you. Your note is with our studio team. We&apos;ll be in touch with sample boxes and technical details within two working days.
+                <p style={{ margin: 0, fontWeight: 600 }}>
+                  Thank you. Your enquiry has been delivered directly to our studio team (pranavpinestrong@gmail.com).
+                </p>
+                <p style={{ margin: '8px 0 16px', fontSize: 13, opacity: 0.9 }}>
+                  We&apos;ll be in touch with sample boxes and technical details within two working days.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStatus('idle');
+                    setFormData({
+                      name: '',
+                      email: '',
+                      projectType: '',
+                      collection: 'All Collections',
+                      message: ''
+                    });
+                  }}
+                  className="btn-primary"
+                  style={{ padding: '8px 16px', fontSize: 11 }}
+                >
+                  Send another message
+                </button>
               </div>
             ) : (
               <form className="contact-form" onSubmit={submit}>
+                {status === 'error' && (
+                  <div className="contact-error" style={{ marginBottom: 20 }}>
+                    {errorMessage}
+                  </div>
+                )}
                 <div className="field">
                   <label htmlFor="contact-name">Your name</label>
-                  <input id="contact-name" required placeholder="Architect or Designer name" data-testid="input-contact-name" />
+                  <input
+                    id="contact-name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Architect or Designer name"
+                    data-testid="input-contact-name"
+                    disabled={status === 'loading'}
+                  />
                 </div>
                 <div className="field">
                   <label htmlFor="contact-email">Email address</label>
-                  <input id="contact-email" required type="email" placeholder="you@studio.com" data-testid="input-contact-email" />
+                  <input
+                    id="contact-email"
+                    name="email"
+                    required
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="you@studio.com"
+                    data-testid="input-contact-email"
+                    disabled={status === 'loading'}
+                  />
                 </div>
                 <div className="field">
                   <label htmlFor="contact-type">Project type</label>
-                  <select id="contact-type" defaultValue="" required data-testid="select-contact-project">
+                  <select
+                    id="contact-type"
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleChange}
+                    required
+                    data-testid="select-contact-project"
+                    disabled={status === 'loading'}
+                  >
                     <option value="" disabled>Select project typology</option>
                     <option>Bar & Restaurant</option>
                     <option>Showroom & Retail Store</option>
@@ -2577,7 +2749,14 @@ function Contact() {
                 </div>
                 <div className="field">
                   <label htmlFor="contact-collection">Collection of interest</label>
-                  <select id="contact-collection" defaultValue="All Collections">
+                  <select
+                    id="contact-collection"
+                    name="collection"
+                    value={formData.collection}
+                    onChange={handleChange}
+                    data-testid="select-contact-collection"
+                    disabled={status === 'loading'}
+                  >
                     <option>All Collections</option>
                     <option>Groove Collection</option>
                     <option>Mosaic Collection</option>
@@ -2587,12 +2766,26 @@ function Contact() {
                 </div>
                 <div className="field">
                   <label htmlFor="contact-message">Your project details</label>
-                  <textarea id="contact-message" required placeholder="Tell us about the space, room dimensions, or required acoustic relief..." data-testid="textarea-contact-message" />
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us about the space, room dimensions, or required acoustic relief..."
+                    data-testid="textarea-contact-message"
+                    disabled={status === 'loading'}
+                  />
                 </div>
                 <div className="contact-actions">
                   <span className="eyebrow">We read every note</span>
-                  <button type="submit" className="btn-primary" data-testid="button-contact-submit">
-                    Send enquiry <ArrowUpRight size={15} />
+                  <button
+                    type="submit"
+                    className="btn-primary"
+                    disabled={status === 'loading'}
+                    data-testid="button-contact-submit"
+                  >
+                    {status === 'loading' ? 'Sending enquiry...' : <>Send enquiry <ArrowUpRight size={15} /></>}
                   </button>
                 </div>
               </form>
@@ -2605,8 +2798,8 @@ function Contact() {
         <h3>“The best acoustic solution is the one that belongs there.”</h3>
         <div>
           <p>For custom dimensions, technical CAD/BIM downloads, and physical sample boxes, our team is at your disposal.</p>
-          <a href="mailto:studio@pinestrong.com" data-testid="link-contact-email">
-            studio@pinestrong.com <ArrowUpRight size={14} />
+          <a href="mailto:pranavpinestrong@gmail.com" data-testid="link-contact-email">
+            pranavpinestrong@gmail.com <ArrowUpRight size={14} />
           </a>
         </div>
       </div>
